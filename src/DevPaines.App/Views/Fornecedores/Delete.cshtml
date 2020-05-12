@@ -7,10 +7,11 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<vc:Summary></vc:Summary>
+
 <div>
     <h4>Esta ação será permanente!</h4>
     <hr />
-
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nome)
@@ -34,8 +35,8 @@
 
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" class="btn btn-danger" value="Excluir" />
-        <a asp-action="Index" class="btn btn-info">Voltar</a>
+        <input type="submit" value="Excluir" class="btn btn-danger" />
+        <a class="btn btn-info" asp-action="Index">Voltar</a>
     </form>
 </div>
 

@@ -12,15 +12,16 @@ namespace DevPaines.App.Controllers
     public class FornecedoresController : BaseController
     {
         private readonly IFornecedorRepository _fornecedorRepository;
-        private readonly IEnderecoRepository _enderecoRepository;
+        private readonly IFornecedorService _fornecedorService;
         private readonly IMapper _mapper;
 
         public FornecedoresController(IFornecedorRepository fornecedorRepository,
-                                      IEnderecoRepository enderecoRepository,
-                                      IMapper mapper)
+                                      IFornecedorService fornecedorService,
+                                      INotificador notificador,
+                                      IMapper mapper) : base(notificador)
         {
             this._fornecedorRepository = fornecedorRepository;
-            this._enderecoRepository = enderecoRepository;
+            this._fornecedorService = fornecedorService;
             this._mapper = mapper;
         }
 
@@ -59,7 +60,10 @@ namespace DevPaines.App.Controllers
                 return View(fornecedorViewModel);
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorViewModel);
-            await _fornecedorRepository.Adicionar(fornecedor);
+            await _fornecedorService.Adicionar(fornecedor);
+
+            if (!base.OperacaoValida())
+                return View(fornecedorViewModel);
 
             return RedirectToAction(nameof(Index));
         }
@@ -88,7 +92,9 @@ namespace DevPaines.App.Controllers
                 return View(fornecedorViewModel);
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorViewModel);
-            await _fornecedorRepository.Atualizar(fornecedor);
+            await _fornecedorService.Atualizar(fornecedor);
+            if (!base.OperacaoValida())
+                return View(await ObterFornecedorEndereco(id));
 
             return RedirectToAction(nameof(Index));
         }
@@ -112,7 +118,9 @@ namespace DevPaines.App.Controllers
             if (fornecedorViewModel == null)
                 return NotFound();
 
-            await _fornecedorRepository.Remover(id);
+            await _fornecedorService.Remover(id);
+            if (!base.OperacaoValida())
+                return View(fornecedorViewModel);
 
             return RedirectToAction(nameof(Index));
         }
@@ -150,7 +158,9 @@ namespace DevPaines.App.Controllers
                 return PartialView("_AtualizarEndereco", fornecedorViewModel);
 
             var enderecoEntity = _mapper.Map<Endereco>(fornecedorViewModel.Endereco);
-            await _enderecoRepository.Atualizar(enderecoEntity);
+            await _fornecedorService.AtualizarEndereco(enderecoEntity);
+            if (!base.OperacaoValida())
+                return PartialView("_AtualizarEndereco", fornecedorViewModel);
 
             var url = Url.Action("ObterEndereco", "Fornecedores", new { id = fornecedorViewModel.Endereco.FornecedorId });
 

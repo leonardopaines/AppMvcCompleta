@@ -7,6 +7,8 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<vc:Summary></vc:Summary>
+
 <p supress-by-claim-name="Fornecedor" supress-by-claim-value="Adicionar">
     <a class="btn btn-info" asp-action="Create">Novo Fornecedor</a>
 </p>
@@ -42,7 +44,7 @@
                 <td class="text-right">
                     <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><spam class="fa fa-search"></spam></a>
                     <a class="btn btn-warning" supress-by-claim-name="Fornecedor" supress-by-claim-value="Editar" asp-action="Edit" asp-route-id="@item.Id"><spam class="fa fa-pencil-alt"></spam></a>
-                    <a class="btn btn-danger" supress-by-claim-name="Fornecedor" supress-by-claim-value="Excluir"  asp-action="Delete" asp-route-id="@item.Id"><spam class="fa fa-trash"></spam></a>
+                    <a class="btn btn-danger" supress-by-claim-name="Fornecedor" supress-by-claim-value="Excluir" asp-action="Delete" asp-route-id="@item.Id"><spam class="fa fa-trash"></spam></a>
                 </td>
             </tr>
         }

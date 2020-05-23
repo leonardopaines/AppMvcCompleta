@@ -1,5 +1,7 @@
 ﻿using DevPaines.App.Extensions;
 using DevPaines.Business.Interfaces;
+using DevPaines.Business.Notifications;
+using DevPaines.Business.Services;
 using DevPaines.Data.Context;
 using DevPaines.Data.Repository;
 using Microsoft.AspNetCore.Mvc.DataAnnotations;
@@ -17,9 +19,9 @@ namespace DevPaines.App.Configurations
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddSingleton<IValidationAttributeAdapterProvider, MoedaValidationAttributeAdapterProvider>();
 
-            //services.AddScoped<INotificador, Notificador>();
-            //services.AddScoped<IFornecedorService, FornecedorService>();
-            //services.AddScoped<IProdutoService, ProdutoService>();
+            services.AddScoped<INotificador, Notificador>();
+            services.AddScoped<IFornecedorService, FornecedorService>();
+            services.AddScoped<IProdutoService, ProdutoService>();
 
             return services;
         }

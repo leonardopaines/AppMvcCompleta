@@ -1,0 +1,15 @@
+https://api.telegram.org/bot634794712:AAFx4AA0KnN3CsKAisx3m0n7n3owQdcvYtI/sendMessage?text=Hello&chat_id=-1001458857551
+
+
+
+https://api.telegram.org/bot1122778500:AAEHGfIkYI-7B_13GOcE0EuyiUHPV2yamic/getUpdates
+
+
+
+
+base_url = 'https://api.telegram.org/bot' + TOKEN + '/'
+> data = {"url": ""}
+> requests.post(base_url + 'setWebhook', data=data)
+
+
+634794712:AAFx4AA0KnN3CsKAisx3m0n7n3owQdcvYtI

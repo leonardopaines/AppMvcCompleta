@@ -1,7 +1,9 @@
 ﻿using AppMvcBasica.Models;
 using AutoMapper;
+using DevPaines.App.Extensions;
 using DevPaines.App.ViewModels;
 using DevPaines.Business.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace DevPaines.App.Controllers
 {
+    [Authorize]
     public class ProdutosController : BaseController
     {
         private readonly IProdutoRepository _produtoRepository;
@@ -28,6 +31,7 @@ namespace DevPaines.App.Controllers
             this._mapper = mapper;
         }
 
+        [AllowAnonymous]
         [Route("lista-de-produtos")]
         public async Task<IActionResult> Index()
         {
@@ -35,6 +39,7 @@ namespace DevPaines.App.Controllers
             return this.View(produtos);
         }
 
+        [AllowAnonymous]
         [Route("dados-do-produto/{id:guid}")]
         public async Task<IActionResult> Details(Guid id)
         {
@@ -47,6 +52,7 @@ namespace DevPaines.App.Controllers
             return this.View(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [Route("novo-produto")]
         public async Task<IActionResult> Create()
         {
@@ -54,6 +60,7 @@ namespace DevPaines.App.Controllers
             return this.View(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produto", "Adicionar")]
         [Route("novo-produto")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -71,13 +78,14 @@ namespace DevPaines.App.Controllers
             }
 
             await this._produtoService.Adicionar(this._mapper.Map<Produto>(produtoViewModel));
-           
+
             if (!this.OperacaoValida())
                 return this.View(produtoViewModel);
 
             return this.RedirectToAction("Index");
         }
 
+        [ClaimsAuthorize("Produto", "Editar")]
         [Route("editar-produto/{id:guid}")]
         public async Task<IActionResult> Edit(Guid id)
         {
@@ -90,6 +98,7 @@ namespace DevPaines.App.Controllers
             return this.View(produtoViewModel);
         }
 
+        [ClaimsAuthorize("Produto", "Editar")]
         [Route("editar-produto/{id:guid}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -122,6 +131,7 @@ namespace DevPaines.App.Controllers
             return this.RedirectToAction(nameof(Index));
         }
 
+        [ClaimsAuthorize("Produto", "Excluir")]
         [Route("excluir-produto/{id:guid}")]
         public async Task<IActionResult> Delete(Guid id)
         {
@@ -132,6 +142,7 @@ namespace DevPaines.App.Controllers
             return this.View(produto);
         }
 
+        [ClaimsAuthorize("Produto", "Excluir")]
         [Route("excluir-produto/{id:guid}")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
